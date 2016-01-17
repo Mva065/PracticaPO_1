@@ -1,15 +1,14 @@
 package Exercici1;
-
 import Keyboard.*;
-
 public class Exercici1 {
 	
 	public static void main(String [] args){
-		
+	
 		System.out.println("Indica les dimensions del taulell. Entra un numero de files");
 		int i = Keyboard.readInt();
 		System.out.println("Entra un numero de columnes");
 		int j = Keyboard.readInt();
+		int v = 0;
 		while (i > 10 || j > 10){
 			System.out.println("Entra una dimensió de taulell vàlida");
 			i = Keyboard.readInt();
@@ -20,26 +19,26 @@ public class Exercici1 {
 		System.out.println("Especifica un número màxim de tirades: ");
 		int ti = Keyboard.readInt();
 		int h = 1;
+		int l = 0;
 		while (ti <= 0){
 			System.out.println("Ha de ser major de 0");
 			ti = Keyboard.readInt();
 		} while (h <= ti){
-		tirades(i, j, taulell, ti);
+		tirades(i, j, taulell, ti, v);
 		if (totesParades(taulell, i, j)){
 			System.out.println("Felicitats, Has completat el joc.");
 		} else {
 			System.out.println();
 		} h++;
 		}
-		
 		if (h >= ti){
 			System.out.println("Mala sort. Ja no tens més tirades. El joc ha acabat");
+			while (l < ti){
+				enap(i, j, taulell, ti, v, l);
+				l++;
+			}	
 		}
-		
-		
-		
-		
-	
+
 	} public static void creaTaulell(int i, int j, char [][] taulell) {
 		
 		int t = 0;
@@ -52,16 +51,14 @@ public class Exercici1 {
 		for (int x=0; x < i; x++) {
 		for (int y=0; y < j; y++) {					//Crea el taulell amb totes les bombetes apagades
 			    taulell[x][y] = apagat;
-		}
-		}
-		
+	}
+	}
 		while (t <= 10){
 			ali = (int) (Math.random() * i);		//Encen 10 Bombetes
 			alj = (int) (Math.random() * j);
 			taulell[ali][alj] = ences;
 			t++;
-		}
-		
+	}
 		System.out.println("Indica quantes bombetes vols encendre. Indica un numero entre 0 i 10");
 		numB = Keyboard.readInt();
 		while(numB < 0 || numB > 10){
@@ -78,11 +75,10 @@ public class Exercici1 {
 				taulell[ali][alj] = ences;
 			}
 			t++;
-		}
-		
+	}
 		impresioT(taulell);
 
-	} public static void tirades (int i, int j, char [][] taulell, int ti){
+	} public static void tirades (int i, int j, char [][] taulell, int ti, int v){
 		
 		char ences = '■';
 		char apagat = '□';
@@ -127,8 +123,7 @@ public class Exercici1 {
 				taulell[k][l+1] = apagat;
 			} else {
 				taulell[k][l+1] = ences;}
-		
-		
+					
 	} public static void impresioT(char [][] taulell){
 		
 		for (int x=0; x < taulell.length; x++) {
@@ -154,15 +149,25 @@ public class Exercici1 {
 			return false;
 		}
 		
+	} public static void enap (int i, int j, char [][] taulell, int ti, int v, int l){
+		
+		char ences = '■';
+		char apagat = '□';
+		int [] apagades = new int [ti];
+		int [] enceses = new int [ti];
+		int contenceses = 0, contapagades = 0;
+		
+		for (int x=0; x < i; x++) {
+			for (int y=0; y < j; y++) {
+				    if(taulell[x][y] == apagat){
+				    	contapagades++;
+				    } else if (taulell[x][y] == ences){			//Contador enceses / apagades
+				    	contenceses++;
+				    }
+	}}
+		apagades[v] = contapagades;
+		enceses[v] = contenceses;
+		v++;
+		System.out.println("Tirada " + (l+1) + ": --> Tens " + enceses[l] + " enceses i " + apagades[l] + " apagades");
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }
