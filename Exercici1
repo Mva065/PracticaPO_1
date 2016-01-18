@@ -23,7 +23,7 @@ public class Exercici1 {
 		while (ti <= 0){
 			System.out.println("Ha de ser major de 0");
 			ti = Keyboard.readInt();
-		} while (h <= ti){
+		} while (h <= ti || totesParades(taulell, i, j)){
 			System.out.println("Indica les coordenades del botó a premer");
 			System.out.println("Indica la fila. Especifica un valor en l'interval [0,"+ (i - 1) +"]");
 			int k = Keyboard.readInt();
@@ -197,6 +197,7 @@ public class Exercici1 {
 		apagades[v] = contapagades;
 		enceses[v] = contenceses;
 		v++;
+		
 		System.out.println("Tirada " + (p+1) + ": --> Tens " + enceses[p] + " enceses i " + apagades[p] + " apagades");
 		
 		
@@ -246,4 +247,3 @@ public class Exercici1 {
 			taulell[k][l-1] = ences;}
 	} 	
 }
-
