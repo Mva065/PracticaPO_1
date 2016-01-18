@@ -19,12 +19,25 @@ public class Exercici1 {
 		System.out.println("Especifica un número màxim de tirades: ");
 		int ti = Keyboard.readInt();
 		int h = 1;
-		int l = 0;
+		int p = 0;
 		while (ti <= 0){
 			System.out.println("Ha de ser major de 0");
 			ti = Keyboard.readInt();
 		} while (h <= ti){
-		tirades(i, j, taulell, ti, v);
+			System.out.println("Indica les coordenades del botó a premer");
+			System.out.println("Indica la fila. Especifica un valor en l'interval [0,"+ (i - 1) +"]");
+			int k = Keyboard.readInt();
+			while (k < 0 || k > i){
+				System.out.println("Indica un número dins l'interval.");
+				k = Keyboard.readInt();
+			}
+			System.out.println("Indica la columna. Especifica un valor en l'interval [0,"+ (i - 1) +"]");	
+			int l = Keyboard.readInt();
+			while (l < 0 || l > j){
+				System.out.println("Indica un número dins l'interval.");
+				l = Keyboard.readInt();	
+			} 
+		tirades(i, j, taulell, ti, v, k, l);
 		if (totesParades(taulell, i, j)){
 			System.out.println("Felicitats, Has completat el joc.");
 		} else {
@@ -33,13 +46,13 @@ public class Exercici1 {
 		}
 		if (h >= ti){
 			System.out.println("Mala sort. Ja no tens més tirades. El joc ha acabat");
-			while (l < ti){
-				enap(i, j, taulell, ti, v, l);
-				l++;
+			while (p < ti){
+				enap(i, j, taulell, ti, v, p);
+				p++;
 			}	
 		}
 
-	} public static void creaTaulell(int i, int j, char [][] taulell) {
+	} private static void creaTaulell(int i, int j, char [][] taulell) {
 		
 		int t = 0;
 		int ali = 0;
@@ -59,7 +72,7 @@ public class Exercici1 {
 			taulell[ali][alj] = ences;
 			t++;
 	}
-		System.out.println("Indica quantes bombetes vols encendre. Indica un numero entre 0 i 10");
+		System.out.println("Indica quantes bombetes vols encendre. Indica un numero entre 0 i 10. Com més n'encenguis més dificultat.");
 		numB = Keyboard.readInt();
 		while(numB < 0 || numB > 10){
 			System.out.println("Indica un numero entre 0 i 10");
@@ -78,53 +91,69 @@ public class Exercici1 {
 	}
 		impresioT(taulell);
 
-	} public static void tirades (int i, int j, char [][] taulell, int ti, int v){
+	} private static void tirades (int i, int j, char [][] taulell, int ti, int v, int k, int l){
 		
-		char ences = '■';
-		char apagat = '□';
 		
-			System.out.println("Indica les coordenades del botó a premer");
-			System.out.println("Indica la fila. Especifica un valor en l'interval [0,"+ (i - 1) +"]");
-			int k = Keyboard.readInt();
-			while (k < 0 || k > i){
-				System.out.println("Indica un número dins l'interval.");
-				k = Keyboard.readInt();
-			}
-			System.out.println("Indica la columna. Especifica un valor en l'interval [0,"+ (i - 1) +"]");	
-			int l = Keyboard.readInt();
-			while (l < 0 || l > j){
-				System.out.println("Indica un número dins l'interval.");
-				l = Keyboard.readInt();	
-			} 
+			/*
+			 * 	k+1 = sota
+			 * 	k-1 = amunt
+			 * 	l-1 = esquerra
+			 * 	l+1 = dreta
+			 */
+			char ences = '■';
+			char apagat = '□';
 			
-			impresioT(taulell);
+			if (k == 0 || l == 0){
+
+				if(k == 0 && l == 0){							//punta de dalt-esquerra
+					centre(k, l, taulell);
+					dreta(k, l, taulell);
+					sota(k, l, taulell);				
+				} else if (k == 0 && (l < taulell[k].length - 1 && l > 0)){	//linia de adalt
+					centre(k, l, taulell);
+					dreta(k, l, taulell);
+					esquerra (k, l, taulell);
+					sota(k, l, taulell);				
+				} else if (k == 0 && l == taulell[k].length - 1){	//punta de dalt-dreta
+					centre(k, l, taulell);
+					esquerra (k, l, taulell);
+					sota(k, l, taulell);				
+				} else if (l == 0 && ( k > 0 && k < taulell.length - 1)){	//linia esquerra
+					centre(k, l, taulell);
+					dreta(k, l, taulell);
+					sota(k, l, taulell);				
+					amunt(k, l, taulell);
+				} else if (l == 0 && k == taulell.length - 1){	//punta abaix-esquerra
+					centre(k, l, taulell);
+					dreta(k, l, taulell);			
+					amunt(k, l, taulell);
+				} } else if(l == taulell[k].length - 1 || k == taulell.length - 1){
+					if (k == taulell.length - 1 && (l < taulell[k].length - 1 && l > 0)){	//lina de sota
+					centre(k, l, taulell);
+					dreta(k, l, taulell);
+					esquerra (k, l, taulell);				
+					amunt(k, l, taulell);
+				} else if (k == taulell.length - 1 && l == taulell[k].length - 1){	//Punta abaix-dreta
+					centre(k, l, taulell);
+					esquerra (k, l, taulell);				
+					amunt(k, l, taulell);
+				} else if (l == taulell[k].length - 1  && (k > 0 && k < taulell.length - 1)){	//linia dreta
+					centre(k, l, taulell);
+					esquerra (k, l, taulell);
+					sota(k, l, taulell);				
+					amunt(k, l, taulell);
+				}} else {	
+					centre(k, l, taulell);
+					dreta(k, l, taulell);
+					esquerra (k, l, taulell);
+					sota(k, l, taulell);				
+					amunt(k, l, taulell);
+				}
 			
-			if(taulell[k][l] == ences){
-				taulell[k][l] = apagat;				//la que es clica
-			} else {
-				taulell[k][l] = ences;}
+			impresioT(taulell);	
 			
-			if(taulell[k+1][l] == ences){
-				taulell[k+1][l] = apagat;			//la del damunt
-			} else {
-				taulell[k+1][l] = ences;}
 			
-			if(taulell[k-1][l] == ences){			//la de abaix
-				taulell[k-1][l] = apagat;
-			} else {
-				taulell[k-1][l] = ences;}
-			
-			if(taulell[k][l-1] == ences){
-				taulell[k][l-1] = apagat;			//la de l'esquerra
-			} else {
-				taulell[k][l-1] = ences;}				
-			
-			if(taulell[k][l+1] == ences){			//la de la dreta
-				taulell[k][l+1] = apagat;
-			} else {
-				taulell[k][l+1] = ences;}
-					
-	} public static void impresioT(char [][] taulell){
+	} private static void impresioT(char [][] taulell){
 		
 		for (int x=0; x < taulell.length; x++) {
 			for (int y=0; y < taulell[x].length; y++) {
@@ -133,7 +162,7 @@ public class Exercici1 {
 				System.out.println();
 				}
 		
-	} public static boolean totesParades(char [][] taulell, int i, int j){
+	} private static boolean totesParades(char [][] taulell, int i, int j){
 		
 		int cont = 0;
 		char apagat = '□';
@@ -149,7 +178,7 @@ public class Exercici1 {
 			return false;
 		}
 		
-	} public static void enap (int i, int j, char [][] taulell, int ti, int v, int l){
+	} private static void enap (int i, int j, char [][] taulell, int ti, int v, int p){
 		
 		char ences = '■';
 		char apagat = '□';
@@ -168,6 +197,53 @@ public class Exercici1 {
 		apagades[v] = contapagades;
 		enceses[v] = contenceses;
 		v++;
-		System.out.println("Tirada " + (l+1) + ": --> Tens " + enceses[l] + " enceses i " + apagades[l] + " apagades");
-	}
+		System.out.println("Tirada " + (p+1) + ": --> Tens " + enceses[p] + " enceses i " + apagades[p] + " apagades");
+		
+		
+	}  private static void amunt(int k, int l, char [][] taulell){
+		
+		char ences = '■';
+		char apagat = '□';
+		if(taulell[k-1][l] == ences){			
+			taulell[k-1][l] = apagat;
+		} else {
+			taulell[k-1][l] = ences;}
+		
+	} private static void centre(int k, int l, char [][] taulell){
+		
+		char ences = '■';
+		char apagat = '□';
+		if(taulell[k][l] == ences){			
+			taulell[k][l] = apagat;
+		} else {
+			taulell[k][l] = ences;}
+		
+	} private static void sota(int k, int l, char [][] taulell){
+		
+		char ences = '■';
+		char apagat = '□';
+		if(taulell[k+1][l] == ences){			
+			taulell[k+1][l] = apagat;
+		} else {
+			taulell[k+1][l] = ences;}
+		
+	} private static void dreta(int k, int l, char [][] taulell){
+		
+		char ences = '■';
+		char apagat = '□';
+		if(taulell[k][l+1] == ences){			
+			taulell[k][l+1] = apagat;
+		} else {
+			taulell[k][l+1] = ences;}
+		
+	} private static void esquerra(int k, int l, char [][] taulell){
+		
+		char ences = '■';
+		char apagat = '□';
+		if(taulell[k][l-1] == ences){			
+			taulell[k][l-1] = apagat;
+		} else {
+			taulell[k][l-1] = ences;}
+	} 	
 }
+
