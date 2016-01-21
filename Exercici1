@@ -8,7 +8,6 @@ public class Exercici1 {
 		int i = Keyboard.readInt();
 		System.out.println("Entra un numero de columnes");
 		int j = Keyboard.readInt();
-		int v = 0;
 		while (i > 10 || j > 10){
 			System.out.println("Entra una dimensió de taulell vàlida");
 			i = Keyboard.readInt();
@@ -20,6 +19,10 @@ public class Exercici1 {
 		int ti = Keyboard.readInt();
 		int h = 1;
 		int p = 0;
+		int b = 1;
+		boolean trobat = false;
+		int [] apagades = new int [ti + 2];
+		int [] enceses = new int [ti + 2];
 		while (ti <= 0){
 			System.out.println("Ha de ser major de 0");
 			ti = Keyboard.readInt();
@@ -27,17 +30,19 @@ public class Exercici1 {
 			System.out.println("Indica les coordenades del botó a premer");
 			System.out.println("Indica la fila. Especifica un valor en l'interval [0,"+ (i - 1) +"]");
 			int k = Keyboard.readInt();
-			while (k < 0 || k > i){
+			while (k < 0 || k >= i){
 				System.out.println("Indica un número dins l'interval.");
 				k = Keyboard.readInt();
 			}
 			System.out.println("Indica la columna. Especifica un valor en l'interval [0,"+ (i - 1) +"]");	
 			int l = Keyboard.readInt();
-			while (l < 0 || l > j){
+			while (l < 0 || l >= j){
 				System.out.println("Indica un número dins l'interval.");
 				l = Keyboard.readInt();	
 			} 
-		tirades(i, j, taulell, ti, v, k, l);
+		tirades(i, j, taulell, ti, k, l);
+		enap ( i,  j, taulell,  ti, p, apagades, enceses, b, trobat);
+		p++;
 		if (totesParades(taulell, i, j)){
 			System.out.println("Felicitats, Has completat el joc.");
 		} else {
@@ -45,12 +50,12 @@ public class Exercici1 {
 		} h++;
 		}
 		if (h >= ti){
+			int v = 1;
+			trobat = true;
+			p = 0;
 			System.out.println("Mala sort. Ja no tens més tirades. El joc ha acabat");
-			while (p < ti){
-				enap(i, j, taulell, ti, v, p);
-				p++;
+			enap ( i,  j, taulell,  ti, p, apagades, enceses, b, trobat);
 			}	
-		}
 
 	} private static void creaTaulell(int i, int j, char [][] taulell) {
 		
@@ -91,20 +96,9 @@ public class Exercici1 {
 	}
 		impresioT(taulell);
 
-	} private static void tirades (int i, int j, char [][] taulell, int ti, int v, int k, int l){
+	} private static void tirades (int i, int j, char [][] taulell, int ti, int k, int l){
 		
-		
-			/*
-			 * 	k+1 = sota
-			 * 	k-1 = amunt
-			 * 	l-1 = esquerra
-			 * 	l+1 = dreta
-			 */
-			char ences = '■';
-			char apagat = '□';
-			
 			if (k == 0 || l == 0){
-
 				if(k == 0 && l == 0){							//punta de dalt-esquerra
 					centre(k, l, taulell);
 					dreta(k, l, taulell);
@@ -127,7 +121,7 @@ public class Exercici1 {
 					centre(k, l, taulell);
 					dreta(k, l, taulell);			
 					amunt(k, l, taulell);
-			} } else if(l == taulell[k].length - 1 || k == taulell.length - 1){
+				} } else if(l == taulell[k].length - 1 || k == taulell.length - 1){
 					if (k == taulell.length - 1 && (l < taulell[k].length - 1 && l > 0)){	//lina de sota
 					centre(k, l, taulell);
 					dreta(k, l, taulell);
@@ -151,7 +145,6 @@ public class Exercici1 {
 				}
 			
 			impresioT(taulell);	
-			
 			
 	} private static void impresioT(char [][] taulell){
 		
@@ -178,14 +171,12 @@ public class Exercici1 {
 			return false;
 		}
 		
-	} private static void enap (int i, int j, char [][] taulell, int ti, int v, int p){
+	} private static void enap (int i, int j, char [][] taulell, int ti, int p, int [] apagades, int [] enceses, int b, boolean trobat){
 		
 		char ences = '■';
 		char apagat = '□';
-		int [] apagades = new int [ti];
-		int [] enceses = new int [ti];
 		int contenceses = 0, contapagades = 0;
-		
+		if (trobat == false){
 		for (int x=0; x < i; x++) {
 			for (int y=0; y < j; y++) {
 				    if(taulell[x][y] == apagat){
@@ -194,12 +185,18 @@ public class Exercici1 {
 				    	contenceses++;
 				    }
 	}}
-		apagades[v] = contapagades;
-		enceses[v] = contenceses;
-		v++;
+		apagades[p] = contapagades;
+		enceses[p] = contenceses;
 		
-		System.out.println("Tirada " + (p+1) + ": --> Tens " + enceses[p] + " enceses i " + apagades[p] + " apagades");
-		
+	}	b = 1;
+		while(trobat == true && b <= ti){
+		System.out.println("Tirada " + (b) + ": --> Tens " + enceses[p] + " enceses i " + apagades[p] + " apagades");
+		p++;
+		b++;
+		}
+		if (trobat){
+			System.out.println("La tirada amb més bombetes apagades ha estat:");
+		}
 		
 	}  private static void amunt(int k, int l, char [][] taulell){
 		
