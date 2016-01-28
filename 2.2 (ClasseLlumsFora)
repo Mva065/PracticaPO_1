@@ -1,0 +1,105 @@
+package Exercici2;
+import Keyboard.*;
+import Exercici2.ClasseTaulell;
+
+public class ClasseLlumsFora {
+	public static void main (String [] args){
+		
+		System.out.println("Indica les dimensions del taulell. Entra un numero de files");
+		int files = Keyboard.readInt();
+		System.out.println("Entra un numero de columnes");
+		int columnes = Keyboard.readInt();
+		while (files > 10 || columnes > 10){
+			System.out.println("Entra una dimensió de taulell vàlida");
+			files = Keyboard.readInt();
+			columnes = Keyboard.readInt();}
+		System.out.println("Indica quantes bombetes vols encendre. Indica un numero entre 0 i " + files * columnes);
+		int bombetes = Keyboard.readInt();
+		while (bombetes > files * columnes){
+			System.out.println("Indica quantes bombetes vols encendre. Indica un numero entre 0 i " + files * columnes);
+			bombetes = Keyboard.readInt();}
+		
+		ClasseTaulell t = new ClasseTaulell(files, columnes); 
+		t.getFiles(files); t.getColumnes(columnes); t.getBombetes(bombetes); t.encendre(bombetes); t.impresioT();
+
+		System.out.println("Especifica un número màxim de tirades: ");
+		int ti = Keyboard.readInt(), h = 1, p = 0;
+		boolean trobat = false;
+		int [] apagades = new int [ti + 2];
+		int [] enceses = new int [ti +  2];
+		while (h <= ti){
+			System.out.println("Indica les coordenades del botó a premer");
+			System.out.println("Indica la fila. Especifica un valor en l'interval [0,"+ (files - 1) +"]");
+			int k = Keyboard.readInt();
+			while (k < 0 || k >= files){
+				System.out.println("Indica un número dins l'interval.");
+				k = Keyboard.readInt();
+			}
+			System.out.println("Indica la columna. Especifica un valor en l'interval [0,"+ (columnes - 1) +"]");	
+			int l = Keyboard.readInt();
+			while (l < 0 || l >= columnes){
+				System.out.println("Indica un número dins l'interval.");
+				l = Keyboard.readInt();	
+			} 
+			t.setCasella(k, l);
+			t.impresioT();
+			enoap (t,  ti, p, apagades, enceses, trobat);
+			p++;
+			if (t.totesParades()){
+				System.out.println("Felicitats, Has completat el joc.");
+				trobat = true;
+			} h++;} 
+			if (h >= ti){
+				trobat = true;
+				p = 0;
+				System.out.println("Mala sort. Ja no tens més tirades. El joc ha acabat");
+				enoap (t,  ti, p, apagades, enceses, trobat);}} 
+	
+	
+public static void enoap (ClasseTaulell t, int ti, int p, int [] apagades, int [] enceses, boolean trobat){
+	
+		enceses[p] = t.enceses();
+		apagades[p] = t.apagades();
+		
+		int b = 0;
+		while(trobat == true && p + 1 <= ti){
+		System.out.println("Tirada " + (p + 1) + ": --> Tens " + enceses[p] + " enceses i " + apagades[p] + " apagades");
+		if (p > 0 && apagades[p] > apagades[p-1]){
+			b = p;
+		}
+		p++;
+		} if (trobat){
+		System.out.println("La tirada amb més bombetes apagades ha estat la Tirada " +  (b + 1));
+		}
+		
+}
+
+public void amunt(int k, int l, char [][] taulell){
+	if(taulell[k-1][l] == '■'){			
+		taulell[k-1][l] = '□';
+	} else {
+		taulell[k-1][l] = '■';}	
+} public void centre(int k, int l, char [][] taulell){
+	if(taulell[k][l] == '■'){			
+		taulell[k][l] = '□';
+	} else {
+		taulell[k][l] = '■';}
+} public void sota(int k, int l, char [][] taulell){
+	if(taulell[k+1][l] == '■'){			
+		taulell[k+1][l] = '□';
+	} else {
+		taulell[k+1][l] = '■';}
+} public void dreta(int k, int l, char [][] taulell){
+	if(taulell[k][l+1] == '■'){			
+		taulell[k][l+1] = '□';
+	} else {
+		taulell[k][l+1] = '■';}
+} public void esquerra(int k, int l, char [][] taulell){
+	if(taulell[k][l-1] == '■'){			
+		taulell[k][l-1] = '□';
+	} else {
+		taulell[k][l-1] = '■';}}
+
+
+
+}
