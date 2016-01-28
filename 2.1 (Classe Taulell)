@@ -1,0 +1,143 @@
+package Exercici2;
+public class ClasseTaulell {
+
+	//Atributs
+	private char taulell [][];
+	private int files, columnes, bombetes; // Bombetes enceses en tot moment
+	
+	//Mètode Constructor
+	public ClasseTaulell (int files, int columnes){
+		this.files = files;
+		this.columnes = columnes;
+		this.taulell = new char [this.files][this.columnes];
+		for (int x=0; x < this.files; x++) {
+			for (int y=0; y < this.columnes; y++) {					//Crea el taulell amb totes les bombetes apagades
+				    taulell[x][y] = '□';
+		}
+		}}
+	
+	
+	//Mètode encendre N bombetes
+	public void encendre (int bombetes){
+		int alf = 0, alc = 0;
+		for (int t = 0; t < bombetes; t++){
+			alf = (int) (Math.random() * files);		//Encen N Bombetes
+			alc = (int) (Math.random() * columnes);
+			while (this.taulell[alf][alc] == '■'){
+			alf = (int) (Math.random() * files);
+			alc = (int) (Math.random() * columnes);
+			System.out.println("Encenem la posició: " + alf + "," + alc);
+			}
+			taulell[alf][alc] = '■';}
+	}
+	
+	
+	//Accés Atributs
+		public int getFiles(int files){
+			return files;
+		}
+		
+		public int getColumnes(int columnes){
+			return columnes;
+		}
+		
+		public int getBombetes(int bombetes){
+			return bombetes;
+		}
+		
+	
+	//Visualització
+	public void impresioT(){
+		for (int x=0; x < taulell.length; x++) {
+			for (int y=0; y < taulell[x].length; y++) {
+				System.out.print (taulell[x][y] + " ");
+				}
+				System.out.println();}
+	}
+	
+	//Estan totes les bombetes apagades?
+	public boolean totesParades(){
+		
+		int cont = 0;
+			for (int x=0; x < this.taulell.length; x++) {
+			for (int y=0; y < this.taulell[x].length; y++) {
+				if (taulell[x][y] == '□'){
+					cont++;
+				}}}
+			
+		if (cont == (this.files * this.columnes)){
+			return true;
+		} else { 
+			return false;
+		}}	
+	
+	
+	public int apagades(){
+		int contapagades = 0;
+		for (int x=0; x < this.files; x++) {
+			for (int y=0; y < this.columnes; y++) {
+				    if(this.taulell[x][y] == '□'){
+				    	contapagades++;
+				    } else {}
+				    
+		}} return contapagades;}
+	
+	public int enceses(){
+		int contenceses = 0;
+		for (int x=0; x < this.files; x++) {
+			for (int y=0; y < this.columnes; y++) {
+				   if (this.taulell[x][y] == '■'){			//Contador enceses / apagades
+				    	contenceses++;
+				    } else {}
+	}} return contenceses;}
+	
+	
+	//Tirada
+	public void setCasella(int k, int l){
+		ClasseLlumsFora c = new ClasseLlumsFora();
+		if (k == 0 || l == 0){
+			if(k == 0 && l == 0){							//punta de dalt-esquerra
+				c.centre(k, l, taulell);
+				c.dreta(k, l, taulell);
+				c.sota(k, l, taulell);				
+			} else if (k == 0 && (l < taulell[k].length - 1 && l > 0)){	//linia de adalt
+				c.centre(k, l, taulell);
+				c.dreta(k, l, taulell);
+				c.esquerra (k, l, taulell);
+				c.sota(k, l, taulell);				
+			} else if (k == 0 && l == taulell[k].length - 1){	//punta de dalt-dreta
+				c.centre(k, l, taulell);
+				c.esquerra (k, l, taulell);
+				c.sota(k, l, taulell);				
+			} else if (l == 0 && ( k > 0 && k < taulell.length - 1)){	//linia esquerra
+				c.centre(k, l, taulell);
+				c.dreta(k, l, taulell);
+				c.sota(k, l, taulell);				
+				c.amunt(k, l, taulell);
+			} else if (l == 0 && k == taulell.length - 1){	//punta abaix-esquerra
+				c.centre(k, l, taulell);
+				c.dreta(k, l, taulell);			
+				c.amunt(k, l, taulell);
+			} } else if(l == taulell[k].length - 1 || k == taulell.length - 1){
+				if (k == taulell.length - 1 && (l < taulell[k].length - 1 && l > 0)){	//lina de sota
+				c.centre(k, l, taulell);
+				c.dreta(k, l, taulell);
+				c.esquerra (k, l, taulell);				
+				c.amunt(k, l, taulell);
+			} else if (k == taulell.length - 1 && l == taulell[k].length - 1){	//Punta abaix-dreta
+				c.centre(k, l, taulell);
+				c.esquerra (k, l, taulell);				
+				c.amunt(k, l, taulell);
+			} else if (l == taulell[k].length - 1  && (k > 0 && k < taulell.length - 1)){	//linia dreta
+				c.centre(k, l, taulell);
+				c.esquerra (k, l, taulell);
+				c.sota(k, l, taulell);				
+				c.amunt(k, l, taulell);
+			}} else {	
+				c.centre(k, l, taulell);
+				c.dreta(k, l, taulell);
+				c.esquerra (k, l, taulell);
+				c.sota(k, l, taulell);				
+				c.amunt(k, l, taulell);
+			}}}
+	
